@@ -28,6 +28,7 @@ public class SearchAction {
     public SearchAction() {
     }
 
+
     public Map<Integer, String> getListCategory() {
         return listCategory;
     }
