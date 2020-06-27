@@ -15,21 +15,26 @@ import java.util.List;
  * @author vuthi
  */
 public class SearchAction {
+
     private String searchResource;
     private String searchCategory;
     private Date date;
     private List<Tbl_ResourceDTO> list;
     private final String SUCCESS = "success";
+
     public SearchAction() {
     }
-    
+
     public String execute() throws Exception {
         Tbl_ResourceDAO dao = new Tbl_ResourceDAO();
-        if(searchResource.trim().equals("")){
-            dao.searchResource(searchResource, searchCategory, date);
-            
-            list = dao.getList();
+        if(searchResource == null){
+            searchResource = "";
         }
+        
+        dao.searchResource(searchResource, searchCategory, date);
+
+        list = dao.getList();
+
         return SUCCESS;
     }
 
@@ -64,6 +69,5 @@ public class SearchAction {
     public void setList(List<Tbl_ResourceDTO> list) {
         this.list = list;
     }
-    
-    
+
 }
