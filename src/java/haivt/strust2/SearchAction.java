@@ -5,31 +5,45 @@
  */
 package haivt.strust2;
 
+import haivt.resources.Tbl_CategoryDAO;
 import haivt.resources.Tbl_ResourceDAO;
 import haivt.resources.Tbl_ResourceDTO;
-import java.sql.Date;
 import java.util.List;
+import java.util.Map;
 
 /**
  *
  * @author vuthi
  */
 public class SearchAction {
+
     private String searchResource;
     private String searchCategory;
-    private Date date;
+    private String fromDate;
+    private String toDate;
     private List<Tbl_ResourceDTO> list;
+    private Map<Integer, String> listCategory;
     private final String SUCCESS = "success";
+
     public SearchAction() {
     }
-    
+
+    public Map<Integer, String> getListCategory() {
+        return listCategory;
+    }
+
+    public void setListCategory(Map<Integer, String> listCategory) {
+        this.listCategory = listCategory;
+    }
+
     public String execute() throws Exception {
         Tbl_ResourceDAO dao = new Tbl_ResourceDAO();
-        if(searchResource.trim().equals("")){
-            dao.searchResource(searchResource, searchCategory, date);
-            
-            list = dao.getList();
-        }
+        Tbl_CategoryDAO cateDao = new Tbl_CategoryDAO();
+        cateDao.getCategory();
+        listCategory = cateDao.getListCategory();
+        dao.searchResource(searchResource, searchCategory, fromDate, toDate);
+        list = dao.getList();
+
         return SUCCESS;
     }
 
@@ -49,12 +63,20 @@ public class SearchAction {
         this.searchCategory = searchCategory;
     }
 
-    public Date getDate() {
-        return date;
+    public String getFromDate() {
+        return fromDate;
     }
 
-    public void setDate(Date date) {
-        this.date = date;
+    public void setFromDate(String fromDate) {
+        this.fromDate = fromDate;
+    }
+
+    public String getToDate() {
+        return toDate;
+    }
+
+    public void setToDate(String toDate) {
+        this.toDate = toDate;
     }
 
     public List<Tbl_ResourceDTO> getList() {
@@ -64,6 +86,5 @@ public class SearchAction {
     public void setList(List<Tbl_ResourceDTO> list) {
         this.list = list;
     }
-    
-    
+
 }

@@ -18,15 +18,20 @@ public class Tbl_ResourceDTO implements Serializable{
     private int quantity;
     private String categoryName;
     private String colorName;
-    private Date date;
+    private String fromDate;
+    private String toDate;
 
-    public Tbl_ResourceDTO(int resourceId, String resourceName, int quantity, String categoryName, String colorName, Date date) {
+    public Tbl_ResourceDTO() {
+    }
+
+    public Tbl_ResourceDTO(int resourceId, String resourceName, int quantity, String categoryName, String colorName, String fromDate, String toDate) {
         this.resourceId = resourceId;
         this.resourceName = resourceName;
         this.quantity = quantity;
         this.categoryName = categoryName;
         this.colorName = colorName;
-        this.date = date;
+        this.fromDate = fromDate;
+        this.toDate = toDate;
     }
 
     public int getResourceId() {
@@ -69,15 +74,21 @@ public class Tbl_ResourceDTO implements Serializable{
         this.colorName = colorName;
     }
 
-    public Date getDate() {
-        return date;
+    public String getFromDate() {
+        return fromDate;
     }
 
-    public void setDate(Date date) {
-        this.date = date;
+    public void setFromDate(String fromDate) {
+        this.fromDate = fromDate;
+    }
+
+    public String getToDate() {
+        return toDate;
+    }
+
+    public void setToDate(String toDate) {
+        this.toDate = toDate;
     }
 
     
-    public Tbl_ResourceDTO() {
-    }
 }
