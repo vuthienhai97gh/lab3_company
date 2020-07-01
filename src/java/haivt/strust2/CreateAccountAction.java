@@ -29,9 +29,7 @@ public class CreateAccountAction {
     }
 
     public String execute() {
-        String code = "";
-        int randomNumber = 0;
-        Random random = null;
+
         try {
             Tbl_AccountDAO dao = new Tbl_AccountDAO();
             PasswordUtilities pass = new PasswordUtilities();
@@ -40,17 +38,14 @@ public class CreateAccountAction {
 
             if (result) {
 
-                random = new Random();
-                for (int i = 0; i < 4; i++) {
-                    randomNumber = random.nextInt(9);
-                    code += randomNumber;
-                }
-                SendMailUtils.sendSimpleEmail(userId, "OTP code: "+code , "verify the email");
+                
+                SendMailUtils.sendSimpleEmail(userId, "http://localhost:8080/Lab3_Company/verify.action?email="  +userId , "verify the email");
 
                 return SUCCESS;
             }
         } catch (Exception e) {
         }
+
         return FAIL;
     }
 

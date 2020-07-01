@@ -19,14 +19,29 @@
     <body
         <div class="container-fluid">
             Welcome, <font color="red">${sessionScope.USER.fullName}</font>
+            <s:a action="logout">Logout</s:a>
             <h1>Search Page</h1>
             <s:form action="search">
-                <s:textfield name="searchResource" label="Search Resource"/>
+
+                <div class="content-search">
+                    <s:textfield name="searchResource" label="Search Resource"/><br/><br/>
+                    <!--Dates: <input type="date" name="fromDate" value="${param.fromDate}"/> - <input type="date" name="toDate" value="${param.toDate}"/><br/><br/>-->
+                    <s:textfield name="fromDate" type="date" label="Search From Date"/> 
+                    <s:textfield name="toDate" type="date" label="Search To Date"/><br/><br/>
+
+                    <s:if test="%{listCategory != null}">
+                        <s:select label="Select Category"
+                                  name="searchCategory"
+                                  headerValue="Select Category"
+                                  list="%{listCategory}"
+                                  />
+                    </s:if>
+                </div>
                 <s:submit value="Search"/>
             </s:form>
 
             <s:if test="%{list != null}">
-                <table border="1">
+                <table border="1" class="table table-dark table-striped">
                     <thead>
                         <tr>
                             <th>No.</th>
@@ -34,7 +49,8 @@
                             <th>Quantity</th>
                             <th>Category Name</th>
                             <th>Color</th>
-                            <th>Date</th>
+                            <th>From Date</th>
+                            <th>To Date</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -55,7 +71,10 @@
                                     <s:property value="colorName"/>
                                 </td>
                                 <td>
-                                    <s:property value="date"/>
+                                    <s:property value="fromDate"/>
+                                </td>
+                                <td>
+                                    <s:property value="toDate"/>
                                 </td>
                             </tr>
                         </s:iterator>
