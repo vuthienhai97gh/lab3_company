@@ -30,6 +30,7 @@
                 <button type="submit" class="btn btn-primary" value="Login">Login</button>
                 <input type="reset" value="Reset" class="btn btn-primary" /><br/><br/>
                 <div class="g-recaptcha" data-sitekey="6LeUMqoZAAAAAFZGbLzF6fW1VDRLZmcXXM65EBje" ></div>
+                <a href="createaccount.jsp">Click here to create an account</a>
             </form>
 
             <!--<a href="createNewAccount.jsp">Click here to Sign Up</a>-->

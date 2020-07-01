@@ -66,7 +66,7 @@ public class Tbl_AccountDAO implements Serializable {
         try {
             con = DBUtils.makeConnection();
             if (con != null) {
-                String sql = "insert into dbo.members (user_id ,password ,name ,phone ,address ) values (?, ?, ?, ?, ?)";
+                String sql = "insert into dbo.members (user_id ,password ,name ,phone ,address, date_created, role) values (?, ?, ?, ?, ?, getDate(), 2)";
                 ps = con.prepareStatement(sql);
 
                 ps.setString(1, userId);

@@ -30,18 +30,18 @@ public class SendMailUtils {
         props.put("mail.smtp.starttls.enable", "true");
         props.put("mail.smtp.host", "smtp.gmail.com");
         props.put("mail.smtp.port", "587");
-
-        Session session = Session.getInstance(props, new javax.mail.Authenticator() {
-            protected PasswordAuthentication getPasswordAuthentication() {
-                return new PasswordAuthentication("safechildrencapstone@gmail.com", "Tuananh123");
-            }
-        });
-
+    
+         Session session = Session.getInstance(props,
+                new javax.mail.Authenticator() {
+                    protected PasswordAuthentication getPasswordAuthentication() {
+                        return new PasswordAuthentication("darkblue220297@gmail.com", "ozhfgvgsmtxzuzhj");
+                    }
+                });
         boolean isSuccess = false;
         MimeMessage msg = new MimeMessage(session);
 
         try {
-            msg.setFrom(new InternetAddress("safechildrencapstone@gmail.com", false));
+            msg.setFrom(new InternetAddress("darkblue220297@gmail.com", false));
 
             msg.setRecipients(Message.RecipientType.TO, InternetAddress.parse(receiverEmail));
             msg.setSubject(title);
