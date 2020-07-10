@@ -5,7 +5,7 @@
  */
 package haivt.strust2;
 
-import haivt.resources.Tbl_CategoryDAO;
+import haivt.category.Tbl_CategoryDAO;
 import haivt.resources.Tbl_ResourceDAO;
 import haivt.resources.Tbl_ResourceDTO;
 import java.util.List;
@@ -21,13 +21,21 @@ public class SearchAction {
     private String searchCategory;
     private String fromDate;
     private String toDate;
+    private int start;
+
+    public int getStart() {
+        return start;
+    }
+
+    public void setStart(int start) {
+        this.start = start;
+    }
     private List<Tbl_ResourceDTO> list;
     private Map<Integer, String> listCategory;
     private final String SUCCESS = "success";
 
     public SearchAction() {
     }
-
 
     public Map<Integer, String> getListCategory() {
         return listCategory;
@@ -42,9 +50,15 @@ public class SearchAction {
         Tbl_CategoryDAO cateDao = new Tbl_CategoryDAO();
         cateDao.getCategory();
         listCategory = cateDao.getListCategory();
+        if (searchResource == null) {
+            searchResource = "";
+        }
+        if (searchCategory == null) {
+            searchCategory = "0";
+        }
         dao.searchResource(searchResource, searchCategory, fromDate, toDate);
         list = dao.getList();
-
+//        System.out.println("Start : " + start);
         return SUCCESS;
     }
 

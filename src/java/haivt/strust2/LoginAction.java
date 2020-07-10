@@ -9,7 +9,7 @@ import com.opensymphony.xwork2.ActionContext;
 import haivt.accounts.Tbl_AccountDAO;
 import haivt.accounts.Tbl_AccountDTO;
 import haivt.recaptcha.VerifyRecaptcha;
-import haivt.resources.Tbl_CategoryDAO;
+import haivt.category.Tbl_CategoryDAO;
 import haivt.utils.PasswordUtilities;
 import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
@@ -23,8 +23,7 @@ public class LoginAction {
 
     private String username;
     private String password;
-    private final String SUCCESS = "success";
-    private final String FAIL = "fail";
+
     private Map<Integer, String> listCategory;
 
     public LoginAction() {
@@ -46,16 +45,22 @@ public class LoginAction {
         HttpServletRequest request = ServletActionContext.getRequest();
         String gRecaptchaResponse = request.getParameter("g-recaptcha-response");
         boolean verify = VerifyRecaptcha.verify(gRecaptchaResponse);
+        String loginResult = "fail";
+        Map request1 = (Map) ActionContext.getContext().get("request");
         if (user != null) {
-
+            if (!verify) {
+                request1.put("ERRORCAPTCHA", "Click reCaptCha Please!!!");
+                return loginResult;
+            }
             Map session = ActionContext.getContext().getSession();
             session.put("USER", user);
-
+            session.put("ROLE", user.getRole());
             cateDao.getCategory();
             listCategory = cateDao.getListCategory();
-            return SUCCESS;
+            return "success";
         } else {
-            return FAIL;
+            request1.put("ERROR", "Invalid Username or Password!!!");
+            return loginResult;
         }
 
     }

@@ -13,7 +13,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -63,7 +62,7 @@ public class BookingDAO implements Serializable {
         try {
             con = DBUtils.makeConnection();
             if (con != null) {
-                String sql = "update booking set status = ? where id = ?";
+                String sql = "update booking set status_name = ? where status_id = ?";
                 ps = con.prepareStatement(sql);
                 ps.setInt(1, status);
                 ps.setInt(2, bookingId);
@@ -124,8 +123,8 @@ public class BookingDAO implements Serializable {
         try {
             con = DBUtils.makeConnection();
             if (con != null) {
-                String sql = "select b.id, b.resource_id, r.resource_name, m.name, b.status, b.quantity, b.date_created, b.last_updated "
-                        + "from booking b join resource r on b.resource_id = r.id join members m on b.member_id = m.id "
+                String sql = "select b.booking_id, b.resource_id, r.resource_name, m.name, b.status, b.quantity, b.date_created, b.last_updated "
+                        + "from booking b join resource r on b.resource_id = r.role_id join members m on b.member_id = m.member_id "
                         + "where r.resource_name like ? "
                         + "and b.date_created between ? and ?"
                         + "and b.status = ?";

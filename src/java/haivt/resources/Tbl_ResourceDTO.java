@@ -6,7 +6,6 @@
 package haivt.resources;
 
 import java.io.Serializable;
-import java.sql.Date;
 
 /**
  *
@@ -33,6 +32,15 @@ public class Tbl_ResourceDTO implements Serializable{
         this.fromDate = fromDate;
         this.toDate = toDate;
     }
+
+    public Tbl_ResourceDTO(int resourceId, String resourceName, int quantity, String categoryName, String colorName) {
+        this.resourceId = resourceId;
+        this.resourceName = resourceName;
+        this.quantity = quantity;
+        this.categoryName = categoryName;
+        this.colorName = colorName;
+    }
+    
 
     public int getResourceId() {
         return resourceId;

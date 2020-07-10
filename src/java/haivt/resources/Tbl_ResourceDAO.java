@@ -95,14 +95,14 @@ public class Tbl_ResourceDAO implements Serializable {
             con = DBUtils.makeConnection();
             if (con != null) {
 
-                String sql = "select rs.id, rs.resource_name, cl.color_name, ct.category_name, rs.quantity, rs.from_date, rs.to_date "
-                        + "from dbo.resource as rs join dbo.category as ct on rs.category_id = ct.id join dbo.color as cl  on rs.color_id = cl.id "
+                String sql = "select rs.resource_id, rs.resource_name, cl.color_name, ct.category_name, rs.quantity, rs.from_date, rs.to_date "
+                        + "from dbo.resource as rs join dbo.category as ct on rs.category_id = ct.category_id join dbo.color as cl on rs.color_id = cl.color_id "
                         + "where rs.resource_name like ? and rs.from_date >= ? and rs.to_date <= ? and rs.category_id = ?";
                 if (category.equalsIgnoreCase("0")) {
-                    sql = "select rs.id, rs.resource_name, cl.color_name, ct.category_name, rs.quantity, rs.from_date, rs.to_date "
-                            + "from dbo.resource as rs join dbo.category as ct on rs.category_id = ct.id join dbo.color as cl  on rs.color_id = cl.id "
+                    sql = "select rs.resource_id, rs.resource_name, cl.color_name, ct.category_name, rs.quantity, rs.from_date, rs.to_date "
+                            + "from dbo.resource as rs join dbo.category as ct on rs.category_id = ct.category_id join dbo.color as cl  on rs.color_id = cl.color_id "
                             + "where rs.resource_name like ? and rs.from_date >= ? and rs.to_date <= ? ";
-                     ps = con.prepareStatement(sql);
+                    ps = con.prepareStatement(sql);
                     ps.setString(1, "%" + resourceName + "%");
                     ps.setDate(2, _fromDate);
                     ps.setDate(3, _toDate);
@@ -112,7 +112,7 @@ public class Tbl_ResourceDAO implements Serializable {
                             list = new ArrayList<>();
                         }
                         Tbl_ResourceDTO dto = new Tbl_ResourceDTO();
-                        dto.setResourceId(rs.getInt("id"));
+                        dto.setResourceId(rs.getInt("resource_id"));
                         dto.setResourceName(rs.getString("resource_name"));
                         dto.setColorName(rs.getString("color_name"));
                         dto.setCategoryName(rs.getString("category_name"));
@@ -133,7 +133,7 @@ public class Tbl_ResourceDAO implements Serializable {
                             list = new ArrayList<>();
                         }
                         Tbl_ResourceDTO dto = new Tbl_ResourceDTO();
-                        dto.setResourceId(rs.getInt("id"));
+                        dto.setResourceId(rs.getInt("resource_id"));
                         dto.setResourceName(rs.getString("resource_name"));
                         dto.setColorName(rs.getString("color_name"));
                         dto.setCategoryName(rs.getString("category_name"));
@@ -157,4 +157,63 @@ public class Tbl_ResourceDAO implements Serializable {
             }
         }
     }
+
+    public Tbl_ResourceDTO getResourceById(String resourceId) throws NamingException, SQLException {
+        Tbl_ResourceDTO result = null;
+        try {
+            con = DBUtils.makeConnection();
+            if (con != null) {
+                String sql = "select rs.resource_id, rs.color_id, rs.category_id, rs.resource_name, rs.quantity, rs.from_date, ca.category_id, ca.category_name, cl.color_id, cl.color_name "
+                        + "from resource rs, category ca, color cl "
+                        + "where rs.color_id = cl.color_id and rs.category_id = ca.category_id and rs.resource_id = ?";
+                ps = con.prepareStatement(sql);
+                ps.setString(1, resourceId);
+                rs = ps.executeQuery();
+                if (rs.next()) {
+                    int rsId = rs.getInt("resource_id");
+//                    int colorId = rs.getInt("color_id");
+//                    int categoryId = rs.getInt("category_id");
+                    String resourceName = rs.getString("resource_name");
+                    int availResource = rs.getInt("quantity");
+                    String categoryName = rs.getString("category_name");
+                    String colorName = rs.getString("color_name");
+                    result = new Tbl_ResourceDTO(rsId, resourceName, availResource, categoryName, colorName);
+                }
+            }
+        } finally {
+            if (rs != null) {
+                rs.close();
+            }
+            if (ps != null) {
+                ps.close();
+            }
+            if (con != null) {
+                con.close();
+            }
+        }
+        return result;
+    }
+    public boolean updateQuantity(int resourceId, int rsquantity) throws NamingException, SQLException {
+        boolean result = false;
+        try {
+            con = DBUtils.makeConnection();
+            String sql = "Update resource set quantity = quantity - ? Where resource_id = ?";
+            ps = con.prepareStatement(sql);
+            ps.setInt(1, resourceId);
+            ps.setInt(2, rsquantity);
+            result = ps.executeUpdate() > 0;
+        } finally {
+            if (rs != null) {
+                rs.close();
+            }
+            if (ps != null) {
+                ps.close();
+            }
+            if (con != null) {
+                con.close();
+            }
+        }
+        return result;
+    }
+
 }

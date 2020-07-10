@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package haivt.resources;
+package haivt.category;
 
 import haivt.utils.DBUtils;
 import java.io.Serializable;
@@ -11,9 +11,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import javax.naming.NamingException;
 
@@ -40,14 +38,14 @@ public class Tbl_CategoryDAO implements Serializable {
         con = DBUtils.makeConnection();
         try {
             if (con != null) {
-                String sql = "select id,category_name from category";
+                String sql = "select category_id,category_name from category";
                 ps = con.prepareStatement(sql);
                 rs = ps.executeQuery();
                 while (rs.next()) {
                     if (listCategory == null) {
                         listCategory = new HashMap<>();
                     }
-                    int categoryId = rs.getInt("id");
+                    int categoryId = rs.getInt("category_id");
                     String categoryName = rs.getString("category_name");
                     listCategory.put(categoryId, categoryName);
                 }
