@@ -29,6 +29,20 @@
             <result name="success">cart.jsp</result>
             <result name="fail">cart.jsp</result>
         </action>
-        
+        <action name="searchListRequest" class="haivt.strust2.SearchListRequestAction">
+            <result name="success">requestbooking.jsp</result>
+        </action>
+        <action name="deleteRequest" class="haivt.strust2.DeleteRequestAction">
+            <result name="success">requestbooking.jsp</result>
+        </action>
+        <action name="acceptRequest" class="haivt.strust2.AcceptAction">
+            <result name="success">requestbooking.jsp</result>
+        </action>
+        <action name="searchHistoryRequest" class="haivt.strust2.SearchHistoryRequestAction">
+            <result name="success">historybooking.jsp</result>
+        </action>
+        <action name="deactiveRequest" class="haivt.strust2.DeactiveRequestAction">
+            <result name="success">historybooking.jsp</result>
+        </action>
     </package>
 </struts>

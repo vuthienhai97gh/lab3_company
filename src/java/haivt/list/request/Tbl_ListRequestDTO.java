@@ -12,7 +12,8 @@ import java.io.Serializable;
  * @author vuthi
  */
 public class Tbl_ListRequestDTO implements Serializable{
-    private String resourceName;
+    private int requestId;
+    private String requestName;
     private String memberNameRequest;
     private String statusName;
     private int statusId;
@@ -23,8 +24,9 @@ public class Tbl_ListRequestDTO implements Serializable{
     public Tbl_ListRequestDTO() {
     }
 
-    public Tbl_ListRequestDTO(String resourceName, String memberNameRequest, String statusName, int statusId, int memberId, String dateRequest, String dateUsing) {
-        this.resourceName = resourceName;
+    public Tbl_ListRequestDTO(int requestId, String requestName, String memberNameRequest, String statusName, int statusId, int memberId, String dateRequest, String dateUsing) {
+        this.requestId = requestId;
+        this.requestName = requestName;
         this.memberNameRequest = memberNameRequest;
         this.statusName = statusName;
         this.statusId = statusId;
@@ -33,21 +35,27 @@ public class Tbl_ListRequestDTO implements Serializable{
         this.dateUsing = dateUsing;
     }
 
-    public Tbl_ListRequestDTO(String resourceName, String memberNameRequest, String statusName, String dateRequest) {
-        this.resourceName = resourceName;
-        this.memberNameRequest = memberNameRequest;
-        this.statusName = statusName;
-        this.dateRequest = dateRequest;
+    public String getRequestName() {
+        return requestName;
     }
+
+    public void setRequestName(String requestName) {
+        this.requestName = requestName;
+    }
+
+    
     
 
-    public String getResourceName() {
-        return resourceName;
+
+    public int getRequestId() {
+        return requestId;
     }
 
-    public void setResourceName(String resourceName) {
-        this.resourceName = resourceName;
+    public void setRequestId(int requestId) {
+        this.requestId = requestId;
     }
+
+
 
     public String getMemberNameRequest() {
         return memberNameRequest;

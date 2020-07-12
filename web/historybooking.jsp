@@ -33,75 +33,46 @@
                 <h2>This is your booking history</h2>
                 <font color="green"><s:property value="%{#request.CANCEL_STATUS}" /></font>
             <!--coi lịch sử booking-->
-            <s:if test="%{#session.listBooking != null && !#session.listBooking.isEmpty()}">
-                <table border="1" class="table table-dark table-striped">
-                    <thead>
+            <s:form action="searchHistoryRequest">
+                <div class="content-search">
+                    <s:textfield name="searchRequestNameHistory" label="Search Request"/><br/><br/>
+                    <s:textfield name="fromDateRequest" type="date" label="Search From Date"/> 
+                    <s:textfield name="toDateRequest" type="date" label="Search To Date"/><br/><br/>
+                </div>
+                <s:submit value="Search"/>
+            </s:form>
+
+            <table border="1" class="table table-dark table-striped">
+                <thead>
+                    <tr>
+                        <th>No.</th>
+                        <th>Request Name</th>
+                        <th>Date Booking</th>
+                        <th>Status</th>
+                        <th colspan="2">Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <s:iterator value="%{listRequestHistory}" status="counter">
                         <tr>
-                            <th>No.</th>
-                            <th>Total Category Booking</th>
-                            <th>Total Quantity Booking</th>
-                            <th>Booking Date</th>
-                            <th>Status</th>
-                            <th></th>
-                            <th></th>
+                            <td><s:property value="%{#counter.count}"/></td>
+                            <td><s:property value="requestName" /></td>
+                            <td><s:property value="dateRequest" /></td>
+                            <td><s:property value="statusName" /></td>
+                            <s:if  test="statusName == 'New'">
+                                <td><s:form action="deactiveRequest" method="POST">
+                                        <input type="hidden" name="requestId" value="<s:property value="requestId" />" />
+                                        <input type="submit" value="Delete" class="btn btn-primary"/>
+                                    </s:form></td>
+                                </s:if>
                         </tr>
-                    </thead>
-                    <tbody>
-                        <s:iterator value="%{#session.listBooking}" status="counter">
-                            <tr>
-                                <td><s:property value="%{#counter.count}"/></td>
-                                <td><s:property value="" /></td>
-                                <td><s:property value="" /></td>
-                                <td><s:property value="" /></td>
-                                <td>
-                                    <s:form action="viewBookDetail" method="POST">
-                                        <s:hidden name="bookId" value="%{bookId}" />
-                                        <s:submit value="View Detail"/>
-                                    </s:form>
-                                </td>
-                                <td>
-                                    <s:url id="cancelLink" action="cancelBooking">
-                                        <s:param name="bookId" value="%{bookId}" />
-                                    </s:url>
-                                    <s:a href="%{cancelLink}">Cancel</s:a>
-                                    </td>
-                                </tr>
-                        </s:iterator>
-                    </tbody>
-                </table>
+                    </s:iterator>
+                </tbody>
+            </table>
+
+            <s:if test="%{listRequestHistory == null}">
+                Is Empty
             </s:if>
-            <!--coi lịch sử booking-->
-            <s:if test="%{#session.listBooking == null || #session.listBooking.isEmpty()}">
-                <h2>Your order history is empty!</h2>
-            </s:if><br/>
-            <!--coi detail booking-->
-            <s:if test="%{#session.listDetails != null || !#session.listDetails.isEmpty()}">
-                <h2>Booking Detail</h2>
-                <table border="1">
-                    <thead>
-                        <tr>
-                            <th>No.</th>
-                            <th>Category Name</th>
-                            <th>Quantity</th>
-                            <th>From Date</th>
-                            <th>To Date</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <s:iterator value="%{#session.listDetails}" status="counter2">
-                            <tr>
-                                <td><s:property value="%{#counter2.count}"/></td>
-                                <td><s:property value="" /></td>
-                                <td><s:property value="" /></td>
-                                <td><s:property value="" /></td>
-                                <td><s:property value="" /></td>
-                            </tr>
-                        </s:iterator>
-                    </tbody>
-                </table>
-            </s:if>
-            <!--coi detail booking-->
         </s:if>
-        <!--nếu là employee or leader-->
     </body>
 </html>

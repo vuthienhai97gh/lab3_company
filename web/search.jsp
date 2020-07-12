@@ -30,7 +30,7 @@
             </s:if>
             <s:if test="%{#session.USER != null && #session.ROLE != 'MANAGER'}">
                 <a href="cart.jsp">View My Cart</a>
-                <s:a action="viewHistoryBooking">My booking history</s:a>
+                <a href="historybooking.jsp">My booking history</a>
             </s:if>
             <s:if test="%{#session.USER != null && #session.ROLE == 'MANAGER'}">
                 <a href="requestbooking.jsp">View Request Booking</a>
@@ -113,11 +113,11 @@
                                     </td>
                                     <td>
                                         <s:if test="%{#session.ROLE != 'MANAGER'}">
-                                            <form action="addToCart" method="POST">
+                                            <s:form action="addToCart" method="POST">
                                                 <input type="hidden" name="memberId" value="<s:property value="%{#session.USER.user_id}" />" />
                                                 <input type="hidden" name="resourceId" value="<s:property value="resourceId" />" />
                                                 <input type="submit" value="Book This" class="btn btn-primary"/>
-                                            </form>
+                                            </s:form>
                                         </s:if>
 
                                     </td>

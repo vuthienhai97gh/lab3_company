@@ -30,45 +30,64 @@
             <s:a action="logout">Logout</s:a><br/>
             <s:a href="search">Back to search</s:a>
                 <h2>This is request process</h2>
+                <font color="green"><s:property value="%{#request.DELETE_STATUS}" /></font>
+                <font color="green"><s:property value="%{#request.ACCEPT_STATUS}" /></font>
+            <s:form action="searchListRequest">
+                <div class="content-search">
+                    <s:textfield name="searchResourceName" label="Search Resource"/><br/><br/>
+                    <s:textfield name="fromDateRequest" type="date" label="Search From Date"/> 
+                    <s:textfield name="toDateRequest" type="date" label="Search To Date"/><br/><br/>
+                    <s:if test="%{listStatus != null}">
+                        <s:select label="Select Status"
+                                  name="searchStatus"
+                                  headerValue="Select Status"
+                                  list="%{listStatus}"
+                                  />
+                    </s:if>
+                </div>
+                <s:submit value="Search"/>
+                <s:submit value="Reset"/>
+            </s:form>
 
-                <!--coi request booking-->
-                <table border="1" class="table table-dark table-striped">
-                    <thead>
+            <!--coi request booking-->
+            <table border="1" class="table table-dark table-striped">
+                <thead>
+                    <tr>
+                        <th>No.</th>
+                        <th>User Booking</th>
+                        <th>Request Name</th>
+                        <th>Booking Date</th>
+                        <th>Status</th>
+                        <th colspan="2">Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <s:iterator value="%{listRequest}" status="counter">
                         <tr>
-                            <th>No.</th>
-                            <th>User Booking</th>
-                            <th>Resource Name</th>
-                            <th>Booking Date</th>
-                            <th>Status</th>
-                            <th></th>
+                            <td><s:property value="%{#counter.count}"/></td>
+                            <td><s:property value="memberNameRequest" /></td>
+                            <td><s:property value="requestName" /></td>
+                            <td><s:property value="dateRequest" /></td>
+                            <td><s:property value="statusName" /></td>
+                            <s:if  test="statusName == 'New'">
+                                <td><s:form action="deleteRequest" method="POST">
+                                        <input type="hidden" name="requestId" value="<s:property value="requestId" />" />
+                                        <input type="submit" value="Delete" class="btn btn-primary"/>
+                                    </s:form></td>
+                                </s:if>
+                                <s:if  test="statusName == 'New'">
+                                <td><s:form action="acceptRequest" method="POST">
+                                        <input type="hidden" name="requestId" value="<s:property value="requestId" />" />
+                                        <input type="submit" value="Accept" class="btn btn-primary"/>
+                                    </s:form></td>
+                                </s:if>
                         </tr>
-                    </thead>
-                    <tbody>
-                        <s:iterator value="%{#session.listBooking}" status="counter">
-                            <tr>
-                                <td><s:property value="%{#counter.count}"/></td>
-                                <td><s:property value="" /></td>
-                                <td><s:property value="" /></td>
-                                <td><s:property value="" /></td>
-                                <td>
-                                    <s:form action="viewBookingDetail" method="POST">
-                                        <s:hidden name="bookId" value="%{bookId}" />
-                                        <s:submit value="View Detail"/>
-                                    </s:form>
-                                </td>
-                                <td>
-                                    <s:url id="cancelLink" action="cancelBooking">
-                                        <s:param name="bookId" value="%{bookId}" />
-                                    </s:url>
-                                    <s:a href="%{cancelLink}">Cancel</s:a>
-                                    </td>
-                                </tr>
-                        </s:iterator>
-                    </tbody>
-                </table>
-                <s:if test="%{#session.shoppingCart == null || #session.shoppingCart.isEmpty()}" >
-                    <h1>Your cart is empty</h1>
-                </s:if>
+                    </s:iterator>
+                </tbody>
+            </table>
+            <s:if test="%{listRequest == null}" >
+                <h1>Your request is empty</h1>
+            </s:if>
             <!--coi request booking-->
         </s:if>
         <!--nếu là manager-->
