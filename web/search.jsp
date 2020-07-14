@@ -24,12 +24,12 @@
                 <a href="login.jsp">Click here to Login !!!</a>
             </s:if>
             <s:if test="%{#session.USER != null}">
-                Welcome, <font color="red"><s:property value="%{#session.USER.fullName}" /></font>
+                Welcome, <font color="red"><s:property value="%{#session.USER.role}"/> - <s:property value="%{#session.USER.fullName}" /></font>
                 <s:a action="logout">Logout</s:a><br/>
                 <font color="green"><s:property value="%{#request.CART_STATUS}" /></font>
             </s:if>
             <s:if test="%{#session.USER != null && #session.ROLE != 'MANAGER'}">
-                <a href="cart.jsp">View My Cart</a>
+                <a href="cart.jsp">View My Cart</a> - 
                 <a href="historybooking.jsp">My booking history</a>
             </s:if>
             <s:if test="%{#session.USER != null && #session.ROLE == 'MANAGER'}">
@@ -41,8 +41,8 @@
             <s:set var="perPage"  value="2"/>
             <s:set var="pageStart" value="0"/>
 
-            <s:if test="%{start > 0}">
-                <s:set var="test" value="%{start}"/>
+            <s:if test="%{#start > 0}">
+                <s:set var="test" value="%{#start}"/>
                 <s:set var="pageStart"  value="%{#test}"/>
             </s:if>
             <s:if test="%{#totalCount < #pageStart}">
@@ -53,22 +53,20 @@
             <!--paging-->
             <s:if test="%{#session.USER != null}">
                 <h1>Search Page</h1>
-                <s:form action="search">
-                    <div class="content-search">
-                        <s:textfield name="searchResource" label="Search Resource"/><br/><br/>
-                        <s:textfield name="fromDate" type="date" label="Search From Date"/> 
+                <s:form action="search" theme="simple" cssClass="well form-search">
+                    <!--<div class="content-search">-->
+                        <s:textfield name="searchResource" label="Search Resource" placeholder="Input Resource Name"/><br/><br/>
+                        <s:textfield name="fromDate" type="date" label="Search From Date" /> - 
                         <s:textfield name="toDate" type="date" label="Search To Date"/><br/><br/>
-
-
-                        <s:if test="%{listCategory != null}">
+                       <s:if test="%{listCategory != null}">
                             <s:select label="Select Category"
                                       name="searchCategory"
                                       headerValue="Select Category"
                                       list="%{listCategory}"
                                       />
-                        </s:if>
-                    </div>
-                    <s:submit value="Search"/>
+                        </s:if><br/><br/>
+                    <!--</div>-->
+                    <s:submit value="Search" cssClass="btn btn-primary"/>
                 </s:form>
                 <s:if test="%{list != null}">
                     <table border="1" class="table table-dark table-striped">

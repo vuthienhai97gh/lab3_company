@@ -49,7 +49,7 @@ public class Tbl_CategoryDAO implements Serializable {
                     String categoryName = rs.getString("category_name");
                     listCategory.put(categoryId, categoryName);
                 }
-                listCategory.put(0,"All");
+                listCategory.put(0,"All Category");
             }
         } finally {
             if (rs != null) {
