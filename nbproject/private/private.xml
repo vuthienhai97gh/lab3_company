@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project-private xmlns="http://www.netbeans.org/ns/project-private/1">
+    <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
+    <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
+        <group>
+            <file>file:/home/phong/LAB/lab3_company/src/java/haivt/booking/BookingDAO.java</file>
+            <file>file:/home/phong/LAB/lab3_company/src/java/haivt/resources/Tbl_ResourceDAO.java</file>
+            <file>file:/home/phong/LAB/lab3_company/src/java/haivt/utils/SendMailUtils.java</file>
+            <file>file:/home/phong/LAB/lab3_company/src/java/haivt/accounts/Tbl_AccountDAO.java</file>
+            <file>file:/home/phong/LAB/lab3_company/src/java/haivt/strust2/LoginAction.java</file>
+            <file>file:/home/phong/LAB/lab3_company/src/java/haivt/booking/BookingDTO.java</file>
+            <file>file:/home/phong/LAB/lab3_company/src/java/haivt/strust2/CreateAccountAction.java</file>
+        </group>
+    </open-files>
+</project-private>

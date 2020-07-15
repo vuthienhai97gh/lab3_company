@@ -19,6 +19,7 @@
     <body
         <div class="container-fluid">
             Welcome, <font color="red">${sessionScope.USER.fullName}</font>
+            <s:a action="logout">Logout</s:a>
             <h1>Search Page</h1>
             <s:form action="search">
 

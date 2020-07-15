@@ -12,5 +12,15 @@
         <action name="search" class="haivt.strust2.SearchAction">
             <result name="success">search.jsp</result>
         </action> 
+        <action name="logout" class="haivt.strust2.LogoutAction">
+            <result name="success">login.jsp</result>
+        </action>
+        <action name="createAccount" class="haivt.strust2.CreateAccountAction">
+            <result name="success">login.jsp</result>
+            <result name="fail" type="redirect">createaccount.jsp</result>
+        </action>
+        <action name="verify" class="haivt.strust2.VerifyAction">
+            <result name="success">login.jsp</result>
+        </action>
     </package>
 </struts>

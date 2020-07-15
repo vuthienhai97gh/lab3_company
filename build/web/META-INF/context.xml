@@ -3,5 +3,5 @@
 <Resource name="Lab3_CompanyDS" type="javax.sql.DataSource" auth="Container" 
             driverClassName="com.microsoft.sqlserver.jdbc.SQLServerDriver"
             url="jdbc:sqlserver://localhost:1433;databaseName=lab3_company;instanceName=SQLEXPRESS"
-            username="sa" password="123456"/>
+            username="sa" password="phongdc@2010"/>
 </Context>
