@@ -6,7 +6,7 @@
     <!-- Configuration for the default package. -->
     <package name="default" extends="struts-default" namespace="/">
         <action name="login" class="haivt.strust2.LoginAction">
-            <result name="success" type="chain">search</result>
+            <result name="success">search.jsp</result>
             <result name="fail">login.jsp</result>
         </action> 
         <action name="search" class="haivt.strust2.SearchAction">
@@ -23,7 +23,7 @@
             <result name="success">login.jsp</result>
         </action>
         <action name="addToCart" class="haivt.strust2.AddToCartAction">
-            <result name="success" type="chain">search</result>
+            <result name="success">search.jsp</result>
         </action>
         <action name="submitRequest" class="haivt.strust2.SubmitRequestAction">
             <result name="success">cart.jsp</result>
@@ -43,9 +43,6 @@
         </action>
         <action name="deactiveRequest" class="haivt.strust2.DeactiveRequestAction">
             <result name="success">historybooking.jsp</result>
-        </action>
-        <action name="removeFromCart" class="haivt.strust2.RemoveFromCartAction">
-            <result name="success">cart.jsp</result>
         </action>
     </package>
 </struts>

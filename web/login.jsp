@@ -35,6 +35,7 @@
                 <div class="g-recaptcha" data-sitekey="6LeUMqoZAAAAAFZGbLzF6fW1VDRLZmcXXM65EBje"></div><br/>
                 <font color="red"><s:property value="%{#request.ERRORCAPTCHA}"/></font><br/>
                 <a href="createaccount.jsp">Click here to create an account</a>
+                
             </s:form><br/>
         </div>
 </html>

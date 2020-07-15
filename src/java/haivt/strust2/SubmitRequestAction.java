@@ -48,7 +48,7 @@ public class SubmitRequestAction {
                 roomDTO = roomDAO.getResourceById(String.valueOf(shoppingCart.get(i).getResourceDTO().getResourceId()));
                 if (shoppingCart.get(i).getQuantity() > roomDTO.getQuantity()) {
                     valid = false;
-                    request.setAttribute("CART_STATUS", roomDTO.getResourceName()+ " only have " + roomDTO.getQuantity() + " Quantity");
+                    request.setAttribute("CART_STATUS", roomDTO.getCategoryName() + " only have " + roomDTO.getQuantity() + " '");
                 }
             }
             if (valid) {

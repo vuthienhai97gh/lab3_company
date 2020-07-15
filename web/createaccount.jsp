@@ -17,7 +17,6 @@
         <s:head/>
     </head>
     <body>
-        <div class="container-fluid">
         <h2>Create new account</h2>
         <font color="green"><s:property value="%{#request.CREATE_STATUS}" /></font>
         <s:form action="createAccount" method="POST">
@@ -30,7 +29,5 @@
             <s:submit value="Create" />
         </s:form>
         <s:a href="login.jsp">Back to login</s:a>
-        </div>
     </body>
-    
 </html>
