@@ -9,6 +9,10 @@
             <result name="success">search.jsp</result>
             <result name="fail">login.jsp</result>
         </action> 
+        <action name="loginGoogle" class="haivt.strust2.LoginGoogleAction">
+            <result name="success" type="chain">search</result>
+            <result name="fail">login.jsp</result>
+        </action> 
         <action name="search" class="haivt.strust2.SearchAction">
             <result name="success">search.jsp</result>
         </action> 
@@ -28,21 +32,39 @@
         <action name="submitRequest" class="haivt.strust2.SubmitRequestAction">
             <result name="success">cart.jsp</result>
             <result name="fail">cart.jsp</result>
+            <result name="input">cart.jsp</result>
         </action>
         <action name="searchListRequest" class="haivt.strust2.SearchListRequestAction">
             <result name="success">requestbooking.jsp</result>
         </action>
         <action name="deleteRequest" class="haivt.strust2.DeleteRequestAction">
-            <result name="success">requestbooking.jsp</result>
+            <result name="success" type="chain">searchListRequest</result>
         </action>
         <action name="acceptRequest" class="haivt.strust2.AcceptAction">
-            <result name="success">requestbooking.jsp</result>
+            <result name="success" type="chain">searchListRequest</result>
         </action>
         <action name="searchHistoryRequest" class="haivt.strust2.SearchHistoryRequestAction">
             <result name="success">historybooking.jsp</result>
         </action>
         <action name="deactiveRequest" class="haivt.strust2.DeactiveRequestAction">
-            <result name="success">historybooking.jsp</result>
+            <result name="success" type="chain">searchHistoryRequest</result>
         </action>
+<<<<<<< Updated upstream
+=======
+        <action name="removeFromCart" class="haivt.strust2.RemoveFromCartAction">
+            <result name="success">cart.jsp</result>
+        </action>
+        <action name="updateCartItem" class="haivt.strust2.UpdateCartItemAction">
+            <result name="input">cart.jsp</result>
+            <result name="success">cart.jsp</result>
+        </action>
+        <action name="viewBookingDetail" class="haivt.strust2.ViewBookingDetailAction">
+            <result name="success" type="chain">searchHistoryRequest</result>
+        </action>
+        <action name="viewBookingDetailManage" class="haivt.strust2.ViewBookingDetailManageAction">
+            <result name="success" type="chain">searchListRequest</result>
+        </action>
+        
+>>>>>>> Stashed changes
     </package>
 </struts>

@@ -11,6 +11,8 @@ import haivt.list.request.Tbl_ListRequestDAO;
 import haivt.list.request.Tbl_ListRequestDTO;
 import java.util.List;
 import java.util.Map;
+import javax.servlet.http.HttpServletRequest;
+import org.apache.struts2.ServletActionContext;
 
 /**
  *
@@ -22,6 +24,24 @@ public class SearchHistoryRequestAction {
     private String searchRequestNameHistory;
     private String fromDateRequest;
     private String toDateRequest;
+    private String offset;
+    private String search;
+
+    public String getOffset() {
+        return offset;
+    }
+
+    public void setOffset(String offset) {
+        this.offset = offset;
+    }
+
+    public String getSearch() {
+        return search;
+    }
+
+    public void setSearch(String search) {
+        this.search = search;
+    }
 
     public String getSearchRequestNameHistory() {
         return searchRequestNameHistory;
@@ -64,11 +84,27 @@ public class SearchHistoryRequestAction {
         Tbl_ListRequestDAO dao = new Tbl_ListRequestDAO();
         Map session = ActionContext.getContext().getSession();
         Tbl_AccountDTO accountDTO = (Tbl_AccountDTO) session.get("USER");
+        HttpServletRequest request = ServletActionContext.getRequest();
+        if (offset == null || offset.isEmpty()) {
+            offset = "0";
+        }
+        if (search == null) {
+            search = "";
+        }
+        int offsets = Integer.parseInt(offset);
+        if (search.equals("Next")) {
+            offsets += 1;
+        } else if (search.equals("Previous")) {
+            if (offsets > 0) {
+                offsets -= 1;
+            }
+        }
         if (searchRequestNameHistory == null) {
             searchRequestNameHistory = "";
         }
-        dao.getHistoryRequest(searchRequestNameHistory,  fromDateRequest, toDateRequest,accountDTO.getMemberId());
+        dao.getHistoryRequest(searchRequestNameHistory, fromDateRequest, toDateRequest, accountDTO.getMemberId(), offsets * 5, 5);
         listRequestHistory = dao.getList();
+        request.setAttribute("offset", offsets);
         return SUCCESS;
     }
 

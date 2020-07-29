@@ -66,7 +66,7 @@ public class Tbl_ListRequestDAO implements Serializable {
         ps = con.prepareStatement(sqlQuery);
     }
 
-    public void getAllRequest(String resourceName, String fromDate, String toDate, String status) throws SQLException, NamingException {
+    public void getAllRequest(String resourceName, String userRequest, String fromDate, String toDate, String status, int offset, int fetch) throws SQLException, NamingException {
         Date _fromDate = null;
         Date _toDate = null;
 
@@ -99,17 +99,7 @@ public class Tbl_ListRequestDAO implements Serializable {
         try {
             con = DBUtils.makeConnection();
             if (con != null) {
-                String sql = "select DISTINCT m.fullname,r.request_id, r.created_date, r.name, st.status_name \n"
-                        + "from dbo.request r join dbo.members as m on r.members_id = m.member_id \n"
-                        + "join dbo.status as st on r.status_id = st.status_id \n"
-                        + "join dbo.request_resource as rr \n"
-                        + "on rr.request_id = r.request_id\n"
-                        + "join dbo.resource as rs \n"
-                        + "on  rs.resource_id = rr.resource_id\n"
-                        + "where rs.resource_name like ?\n"
-                        + "and r.created_date between ? and ? and  r.status_id = ?";
-                if (status.equalsIgnoreCase("0")) {
-                    sql = "select DISTINCT m.fullname,r.request_id, r.created_date, r.name, st.status_name \n"
+                String sql = "select DISTINCT m.fullname,r.request_id, r.created_date, r.name,r.members_id, st.status_name \n"
                             + "from dbo.request r join dbo.members as m on r.members_id = m.member_id \n"
                             + "join dbo.status as st on r.status_id = st.status_id \n"
                             + "join dbo.request_resource as rr \n"
@@ -117,11 +107,24 @@ public class Tbl_ListRequestDAO implements Serializable {
                             + "join dbo.resource as rs \n"
                             + "on  rs.resource_id = rr.resource_id\n"
                             + "where rs.resource_name like ?\n"
-                            + "and r.created_date between ? and ?";
+                            + "and m.fullname like ? and r.created_date between ? and ? and r.status_id = ? order by r.request_id offset ? row fetch next ? rows only";
+                if (status.equalsIgnoreCase("0")) {
+                    sql = "select DISTINCT m.fullname,r.request_id, r.created_date, r.name,r.members_id, st.status_name \n"
+                            + "from dbo.request r join dbo.members as m on r.members_id = m.member_id \n"
+                            + "join dbo.status as st on r.status_id = st.status_id \n"
+                            + "join dbo.request_resource as rr \n"
+                            + "on rr.request_id = r.request_id\n"
+                            + "join dbo.resource as rs \n"
+                            + "on  rs.resource_id = rr.resource_id\n"
+                            + "where rs.resource_name like ?\n"
+                            + "and m.fullname like ? and r.created_date between ? and ? order by r.request_id offset ? row fetch next ? rows only";
                     ps = con.prepareStatement(sql);
                     ps.setString(1, "%" + resourceName + "%");
-                    ps.setDate(2, _fromDate);
-                    ps.setDate(3, _toDate);
+                    ps.setString(2, "%" + userRequest + "%");
+                    ps.setDate(3, _fromDate);
+                    ps.setDate(4, _toDate);
+                    ps.setInt(5, offset);
+                    ps.setInt(6, fetch);
                     rs = ps.executeQuery();
                     while (rs.next()) {
                         if (list == null) {
@@ -133,14 +136,18 @@ public class Tbl_ListRequestDAO implements Serializable {
                         dto.setMemberNameRequest(rs.getString("fullname"));
                         dto.setDateRequest(rs.getString("created_date"));
                         dto.setStatusName(rs.getString("status_name"));
+                        dto.setMemberId(rs.getInt("members_id"));
                         list.add(dto);
                     }
                 } else {
                     ps = con.prepareStatement(sql);
                     ps.setString(1, "%" + resourceName + "%");
-                    ps.setDate(2, _fromDate);
-                    ps.setDate(3, _toDate);
-                    ps.setString(4, status);
+                    ps.setString(2, "%" + userRequest + "%");
+                    ps.setDate(3, _fromDate);
+                    ps.setDate(4, _toDate);
+                    ps.setString(5, status);
+                    ps.setInt(6, offset);
+                    ps.setInt(7, fetch);
                     rs = ps.executeQuery();
                     while (rs.next()) {
                         if (list == null) {
@@ -152,6 +159,7 @@ public class Tbl_ListRequestDAO implements Serializable {
                         dto.setMemberNameRequest(rs.getString("fullname"));
                         dto.setDateRequest(rs.getString("created_date"));
                         dto.setStatusName(rs.getString("status_name"));
+                        dto.setMemberId(rs.getInt("members_id"));
                         list.add(dto);
                     }
                 }
@@ -216,7 +224,7 @@ public class Tbl_ListRequestDAO implements Serializable {
         return false;
     }
 
-    public void getHistoryRequest(String requestName, String fromDate, String toDate, int memberId) throws SQLException, NamingException {
+    public void getHistoryRequest(String requestName, String fromDate, String toDate, int memberId, int offset, int fetch) throws SQLException, NamingException {
         Date _fromDate = null;
         Date _toDate = null;
 
@@ -258,12 +266,14 @@ public class Tbl_ListRequestDAO implements Serializable {
                         + "on  rs.resource_id = rr.resource_id\n"
                         + "where r.name like ?\n "
                         + "and r.members_id = ?\n "
-                        + "and r.created_date between ? and ?";
+                        + "and r.created_date between ? and ? order by r.request_id offset ? row fetch next ? rows only";
                 ps = con.prepareStatement(sql);
                 ps.setString(1, "%" + requestName + "%");
                 ps.setInt(2, memberId);
                 ps.setDate(3, _fromDate);
                 ps.setDate(4, _toDate);
+                ps.setInt(5, offset);
+                ps.setInt(6, fetch);
                 rs = ps.executeQuery();
                 while (rs.next()) {
                     if (list == null) {

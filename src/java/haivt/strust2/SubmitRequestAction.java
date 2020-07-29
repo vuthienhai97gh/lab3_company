@@ -27,6 +27,14 @@ public class SubmitRequestAction {
 
     public String requestName;
 
+    public String getRequestName() {
+        return requestName;
+    }
+
+    public void setRequestName(String requestName) {
+        this.requestName = requestName;
+    }
+
     public SubmitRequestAction() {
     }
 
@@ -62,10 +70,6 @@ public class SubmitRequestAction {
                     roomDAO.updateQuantity(shoppingCart.get(i).getResourceDTO().getResourceId(), shoppingCart.get(i).getQuantity());
                 }
                 request.setAttribute("CART_STATUS", "Send request success.");
-//                session.remove("BookDTO");
-//                session.remove("TOTAL_PRICE");
-//                session.remove("shoppingCart");
-//                session.remove("DURATION");
                 confirmStatus = "success";
             } else {
                 confirmStatus = "fail";
@@ -77,5 +81,6 @@ public class SubmitRequestAction {
         }
         return confirmStatus;
     }
+    
 
 }

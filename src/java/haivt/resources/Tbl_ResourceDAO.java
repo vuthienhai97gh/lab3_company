@@ -35,7 +35,7 @@ public class Tbl_ResourceDAO implements Serializable {
     PreparedStatement ps = null;
     ResultSet rs = null;
 
-    public void searchResource(String resourceName, String category, String fromDate, String toDate) throws SQLException, NamingException {
+    public void searchResource(String resourceName, String category, String fromDate, String toDate, int offset, int fetch) throws SQLException, NamingException {
         Date _fromDate = null;
         Date _toDate = null;
 
@@ -97,15 +97,17 @@ public class Tbl_ResourceDAO implements Serializable {
 
                 String sql = "select rs.resource_id, rs.resource_name, cl.color_name, ct.category_name, rs.quantity, rs.from_date, rs.to_date "
                         + "from dbo.resource as rs join dbo.category as ct on rs.category_id = ct.category_id join dbo.color as cl on rs.color_id = cl.color_id "
-                        + "where rs.resource_name like ? and rs.from_date >= ? and rs.to_date <= ? and rs.category_id = ?";
+                        + "where rs.resource_name like ? and rs.from_date >= ? and rs.to_date <= ? and rs.category_id = ? order by rs.resource_name offset ? row fetch next ? rows only ";
                 if (category.equalsIgnoreCase("0")) {
                     sql = "select rs.resource_id, rs.resource_name, cl.color_name, ct.category_name, rs.quantity, rs.from_date, rs.to_date "
                             + "from dbo.resource as rs join dbo.category as ct on rs.category_id = ct.category_id join dbo.color as cl  on rs.color_id = cl.color_id "
-                            + "where rs.resource_name like ? and rs.from_date >= ? and rs.to_date <= ? ";
+                            + "where rs.resource_name like ? and rs.from_date >= ? and rs.to_date <= ? order by rs.resource_name offset ? row fetch next ? rows only";
                     ps = con.prepareStatement(sql);
                     ps.setString(1, "%" + resourceName + "%");
                     ps.setDate(2, _fromDate);
                     ps.setDate(3, _toDate);
+                    ps.setInt(4, offset);
+                    ps.setInt(5, fetch);
                     rs = ps.executeQuery();
                     while (rs.next()) {
                         if (list == null) {
@@ -127,6 +129,8 @@ public class Tbl_ResourceDAO implements Serializable {
                     ps.setDate(2, _fromDate);
                     ps.setDate(3, _toDate);
                     ps.setString(4, category);
+                    ps.setInt(5, offset);
+                    ps.setInt(6, fetch);
                     rs = ps.executeQuery();
                     while (rs.next()) {
                         if (list == null) {
@@ -193,14 +197,37 @@ public class Tbl_ResourceDAO implements Serializable {
         }
         return result;
     }
+
     public boolean updateQuantity(int resourceId, int rsquantity) throws NamingException, SQLException {
         boolean result = false;
         try {
             con = DBUtils.makeConnection();
             String sql = "Update resource set quantity = quantity - ? Where resource_id = ?";
             ps = con.prepareStatement(sql);
-            ps.setInt(1, resourceId);
-            ps.setInt(2, rsquantity);
+            ps.setInt(1, rsquantity);
+            ps.setInt(2, resourceId);
+            result = ps.executeUpdate() > 0;
+        } finally {
+            if (rs != null) {
+                rs.close();
+            }
+            if (ps != null) {
+                ps.close();
+            }
+            if (con != null) {
+                con.close();
+            }
+        }
+        return result;
+    }
+        public boolean updateQuantityIncreare(int resourceId, int rsquantity) throws NamingException, SQLException {
+        boolean result = false;
+        try {
+            con = DBUtils.makeConnection();
+            String sql = "Update resource set quantity = quantity + ? Where resource_id = ?";
+            ps = con.prepareStatement(sql);
+            ps.setInt(1, rsquantity);
+            ps.setInt(2, resourceId);
             result = ps.executeUpdate() > 0;
         } finally {
             if (rs != null) {
@@ -216,4 +243,45 @@ public class Tbl_ResourceDAO implements Serializable {
         return result;
     }
 
+
+    public void getListResourceByRequestId(int requestId) throws NamingException, SQLException {
+        try {
+            con = DBUtils.makeConnection();
+            if (con != null) {
+                String sql = "select rs.resource_id, rs.color_id, rs.category_id, rs.resource_name, rr.quantity, rs.from_date, rs.to_date, ca.category_id, ca.category_name, cl.color_id, cl.color_name from resource as rs join request_resource as rr on rr.resource_id = rs.resource_id\n"
+                        + "join request r on r.request_id = rr.request_id\n"
+                        + "join category as ca on ca.category_id = rs.category_id\n"
+                        + "join color as cl on cl.color_id = rs.color_id\n"
+                        + "where r.request_id = ?";
+                ps = con.prepareStatement(sql);
+                ps.setInt(1, requestId);
+                rs = ps.executeQuery();
+                while (rs.next()) {
+                    if (list == null) {
+                        list = new ArrayList<>();
+                    }
+                    Tbl_ResourceDTO dto = new Tbl_ResourceDTO();
+                    dto.setResourceId(rs.getInt("resource_id"));
+                    dto.setResourceName(rs.getString("resource_name"));
+                    dto.setColorName(rs.getString("color_name"));
+                    dto.setCategoryName(rs.getString("category_name"));
+                    dto.setQuantity(rs.getInt("quantity"));
+                    dto.setFromDate(rs.getString("from_date"));
+                    dto.setToDate(rs.getString("to_date"));
+                    list.add(dto);
+                }
+            }
+        } finally {
+            if (rs != null) {
+                rs.close();
+            }
+            if (ps != null) {
+                ps.close();
+            }
+            if (con != null) {
+                con.close();
+            }
+        }
+
+    }
 }

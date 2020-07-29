@@ -13,7 +13,7 @@
     </head>
     <body>
         <h1>Invalid Page</h1>
-        <h2><font color="red">Invalid Username or Password!!!</font></h2>
-        <a href="''">Click here to try again !!!</a>
+        <h2><font color="red">Error 404</font></h2>
+        <a href="login.jsp">Click here to try again !!!</a>
     </body>
 </html>

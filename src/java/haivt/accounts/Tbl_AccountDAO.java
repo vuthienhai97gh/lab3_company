@@ -62,7 +62,82 @@ public class Tbl_AccountDAO implements Serializable {
 
         return user;
     }
+ public Tbl_AccountDTO getInformationUser(String username) throws SQLException, NamingException {
+        Tbl_AccountDTO user = null;
+        try {
+            con = DBUtils.makeConnection();
+            if (con != null) {
+                String sql = "Select m.member_id, m.user_id, m.password, m.fullname, r.role_name "
+                        + "from dbo.members as m join role as r on m.role = r.role_id "
+                        + "where m.user_id = ? and status = 1";
+                ps = con.prepareStatement(sql);
+                ps.setString(1, username);
 
+                rs = ps.executeQuery();
+                if (rs.next()) {
+                    user = new Tbl_AccountDTO();
+                    user.setUsername(rs.getString("user_id"));
+                    user.setMemberId(rs.getInt("member_id"));
+                    user.setPassword(rs.getString("password"));
+                    user.setFullName(rs.getString("fullname"));
+                    user.setRole(rs.getString("role_name"));
+                }
+            }
+        } finally {//tạo sau đóng trc
+            if (rs != null)//Result
+            {
+                rs.close();
+            }
+            if (ps != null)//Prepare
+            {
+                ps.close();
+            }
+            if (con != null)//Connect
+            {
+                con.close();
+            }
+        }
+
+        return user;
+    }
+ public Tbl_AccountDTO getInformationUserById(int memberId) throws SQLException, NamingException {
+        Tbl_AccountDTO user = null;
+        try {
+            con = DBUtils.makeConnection();
+            if (con != null) {
+                String sql = "Select member_id, user_id, password, fullname "
+                        + "from dbo.members  "
+                        + "where member_id = ?";
+                ps = con.prepareStatement(sql);
+                ps.setInt(1, memberId);
+
+                rs = ps.executeQuery();
+                if (rs.next()) {
+                    user = new Tbl_AccountDTO();
+                    user.setUsername(rs.getString("user_id"));
+                    user.setMemberId(rs.getInt("member_id"));
+                    user.setPassword(rs.getString("password"));
+                    user.setFullName(rs.getString("fullname"));
+                
+                }
+            }
+        } finally {//tạo sau đóng trc
+            if (rs != null)//Result
+            {
+                rs.close();
+            }
+            if (ps != null)//Prepare
+            {
+                ps.close();
+            }
+            if (con != null)//Connect
+            {
+                con.close();
+            }
+        }
+
+        return user;
+    }
     public boolean createNewAccount(String userId, String password, String name, String phone, String address) throws SQLException, NamingException {
         try {
             con = DBUtils.makeConnection();
